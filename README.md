@@ -1,150 +1,131 @@
-# Home Surveillance System using Raspberry Pi 5
+# 🏠 Home Surveillance System using Raspberry Pi 5 & Next.js
 
 ## 📖 Overview
-The **Home Surveillance System** is a comprehensive security solution built using a **Raspberry Pi 5**. It provides real-time video streaming, motion detection, object recognition, and intelligent notifications. The system leverages a **Raspberry Pi Camera Module 3** for live streaming to a locally hosted website using **nginx**.
+The **Home Surveillance System** is a robust, customizable security solution built on the power of the **Raspberry Pi 5** and a modern web interface using **Next.js**. Designed for real-time video streaming, motion detection, object recognition, and intelligent notifications, this project offers a complete surveillance solution that is both affordable and flexible.
 
-Key features include:
-- **Live video streaming** accessible through a local web interface.
-- **Motion detection** using a **PIR sensor** with automatic snapshot capture and email notifications.
-- **YOLO Nano-based object detection** to recognize objects and provide scenario-based captions.
-- **Application-specific alerts** (e.g., notifying the user when an Amazon package is detected).
+The Raspberry Pi 5 serves as the core processing unit, handling hardware interactions, camera feed processing, and motion detection. The frontend, built with Next.js, provides an intuitive, responsive interface for users to monitor live streams, view snapshots, and receive alerts. By leveraging **YOLO Nano** for object detection, the system achieves high-speed recognition with low computational overhead, making it ideal for an edge device like the Raspberry Pi.
 
-This project is ideal for users looking for an affordable and customizable home security solution.
+This project aims to deliver an efficient and user-friendly platform suitable for various use cases, including home monitoring, package delivery notifications, and pet activity tracking.
 
 ---
 
-## 🛠️ Features
-- **Live Camera Streaming:** Real-time video feed accessible through a local website.
-- **Motion Detection:** Detects movement and captures snapshots automatically.
-- **Email Notifications:** Sends captured images and alerts to the user via email.
-- **YOLO Nano Object Detection:** Provides object recognition with captions displayed on the terminal and website.
-- **Custom Alerts:** Detects specific scenarios like package deliveries and sends tailored notifications.
+## 🧰 Hardware & Software Components
+### 🔌 Hardware Components
+| Component                  | Quantity | Description                                      |
+|---------------------------|----------|--------------------------------------------------|
+| Raspberry Pi 5            | 1        | Main processing unit for running the system     |
+| Raspberry Pi Camera Module 3 | 1     | Captures high-quality video for live streaming   |
+| PIR Motion Sensor         | 1        | Detects motion and triggers snapshot capture     |
+| MicroSD Card (32GB/64GB)  | 1        | Stores OS, project files, and snapshots          |
+| Power Supply              | 1        | Powers the Raspberry Pi                          |
+| Ethernet Cable/Wi-Fi      | 1        | Provides network connectivity                    |
+| Jumper Wires & Breadboard | As needed| For connecting sensors to the Raspberry Pi      |
+
+### 🖥️ Software Stack
+- **Raspberry Pi OS (Lite)**: Lightweight operating system for efficient processing.
+- **Next.js**: Provides server-side rendering and a responsive web interface.
+- **nginx**: Serves the Next.js application locally on the Raspberry Pi.
+- **YOLO Nano**: Lightweight object detection model optimized for edge devices.
+- **Python**: Handles hardware interfacing, motion detection, and object recognition.
+- **Tailwind CSS**: Ensures a modern, responsive UI design.
 
 ---
 
-## 🧰 Components Required
-| Component                  | Quantity | Description                                 |
-|---------------------------|----------|---------------------------------------------|
-| Raspberry Pi 5            | 1        | Main processing unit                        |
-| Raspberry Pi Camera 3     | 1        | For video capture and streaming            |
-| PIR Motion Sensor         | 1        | For motion detection                        |
-| MicroSD Card (32GB or higher) | 1    | For OS and project files                    |
-| Power Supply for Raspberry Pi | 1     | To power the Raspberry Pi                  |
-| Ethernet Cable / Wi-Fi    | 1        | For network connectivity                    |
-| Jumper Wires              | As needed| For connecting the PIR sensor              |
-| Breadboard (Optional)     | 1        | For prototyping sensor connections         |
+## 🏗️ Project Structure Overview
+The project architecture separates hardware processing from the web interface, ensuring modularity and maintainability. The **Raspberry Pi** handles sensor input, camera feed processing, and object detection, while **Next.js** provides a seamless user experience through a local web server.
 
----
-
-## 🚀 Setup Instructions
-1. **Raspberry Pi Headless Setup:**  
-   - Set up Raspberry Pi OS (Lite version recommended).
-   - Enable SSH and connect to the Raspberry Pi without a monitor.
-
-2. **Camera Setup:**  
-   - Install and configure the Raspberry Pi Camera Module 3.
-   - Test camera functionality using `libcamera` commands.
-
-3. **Web Server Installation:**  
-   - Install **nginx** on the Raspberry Pi:
-     ```bash
-     sudo apt update
-     sudo apt install nginx
-     ```
-   - Configure nginx to host the website locally.
-
-4. **Live Streaming Integration:**  
-   - Stream camera output to the website using `ffmpeg` or similar tools.
-
-5. **Motion Detection Setup:**  
-   - Connect the PIR sensor to the Raspberry Pi GPIO pins.
-   - Write a Python script to capture snapshots upon motion detection.
-   - Configure the script to upload images to the "Snapshots" tab on the website.
-
-6. **Email Notification:**  
-   - Use libraries like `smtplib` to send emails with snapshots as attachments.
-
-7. **YOLO Nano Object Detection:**  
-   - Set up YOLO Nano on the Raspberry Pi for lightweight object detection.
-   - Display detected objects and scenario captions in the terminal and on the website.
-   - Configure alerts for specific objects (e.g., "Amazon package detected").
-
----
-
-## 🖥️ Project Structure
+### 📂 Folder Structure
 ```
-HMS/
-├── website/
-│   ├── index.html
-│   ├── snapshots/
-│   │   └── captured_images.png
-│   └── styles.css
-├── scripts/
-│   ├── motion_detection.py
-│   ├── email_alert.py
-│   └── object_detection.py
-├── models/
-│   └── yolo_nano_model.pt
-├── nginx_config/
-│   └── nginx.conf
-└── README.md
+home-surveillance-nextjs/
+├── components/        # Reusable React components for the UI
+│   ├── Navbar.js      # Navigation bar across pages
+│   ├── LiveStream.js  # Displays the real-time video feed
+│   └── SnapshotGallery.js # Renders captured images
+├── pages/             # Next.js pages with automatic routing
+│   ├── index.js       # Homepage with live camera feed
+│   ├── snapshots.js   # Gallery of motion-triggered snapshots
+│   └── api/           # Backend API routes for handling logic
+│       ├── motionDetection.js  # Triggers and processes motion events
+│       ├── emailAlert.js       # Sends email notifications with snapshots
+│       └── objectDetection.js  # Interfaces with YOLO Nano for object recognition
+├── public/            # Publicly accessible static files
+│   └── snapshots/     # Stored images captured during motion detection
+├── scripts/           # Python scripts for hardware interfacing
+│   ├── motion_detection.py  # Reads PIR sensor input and captures images
+│   ├── email_alert.py       # Sends email notifications with attachments
+│   └── object_detection.py  # Runs YOLO Nano for object recognition
+├── styles/            # Styling files using Tailwind CSS
+├── nginx_config/      # Configuration files for the nginx server
+├── README.md          # Project documentation
+├── next.config.js     # Next.js configuration settings
+└── tailwind.config.js # Tailwind CSS configuration
 ```
 
+### 📄 Key Files Explained
+- **components/**: Houses UI elements like the live stream player and snapshot gallery.
+- **pages/**: Contains web pages for live feed viewing and snapshot history.
+- **api/**: Facilitates communication between the frontend and backend processes.
+- **scripts/**: Python scripts that interact with hardware components and handle real-time processing.
+- **public/snapshots/**: Stores images accessible via the website.
+
 ---
 
-## 📸 Sample Output
-- Real-time streaming accessible via `http://<raspberry_pi_ip>`.
-- Snapshot display in the website's "Snapshots" tab.
-- Terminal output for object detection:
-  ```
-  Detected: Amazon Package  | Scenario: "Package delivered at the doorstep"
-  ```
-- Email notification sample:
-  > **Subject:** Motion Detected at Front Door  
-  > **Body:** Motion was detected. See attached snapshot.
+## 🔍 Feature Details
+### 📺 Live Camera Streaming  
+- Utilizes the **Raspberry Pi Camera Module 3** to provide a continuous video feed.
+- Streams are processed using **ffmpeg** and displayed via the Next.js interface.
+- Accessible through a local web address (e.g., `http://<raspberry_pi_ip>`).
+
+### 🕵️ Motion Detection with PIR Sensor  
+- **PIR Motion Sensor** detects movement within its field of view.
+- Upon detection:
+  - A snapshot is captured and stored in the `public/snapshots/` directory.
+  - The snapshot is immediately displayed on the "Snapshots" page.
+  - An email alert with the image attachment is sent to the user.
+
+### 🧠 Object Detection using YOLO Nano  
+- **YOLO Nano** is integrated for real-time object detection with minimal latency.
+- Suitable for detecting objects like packages, people, and pets.
+- Detected objects are displayed as captions in the terminal and web interface.
+- Scenario-based alerts (e.g., "Amazon package detected") are triggered for specific object classes.
+
+### 📧 Email Notifications  
+- **Email alerts** are sent using Python's `smtplib` library.
+- Notifications include:
+  - Subject line indicating the event (e.g., "Motion Detected at Front Door").
+  - Body text with timestamp and event details.
+  - Attached snapshot image for visual confirmation.
+
+---
+
+## 💡 Why Raspberry Pi 5 and YOLO Nano?
+### 🌱 Raspberry Pi 5 Advantages:
+- Faster processing speed suitable for handling real-time video streams.
+- Multiple USB and GPIO ports for sensor integration.
+- Compact size ideal for discrete installations.
+
+### ⚡ YOLO Nano Benefits:
+- **Lightweight:** Optimized for devices with limited computational resources.
+- **Fast Inference:** Ensures quick detection without lag.
+- **High Accuracy:** Reliable object recognition even on a compact edge device.
 
 ---
 
 ## 🧪 Applications
-- Home security monitoring.
-- Package delivery notifications.
-- Pet monitoring and alerts.
-- Smart doorbell integration.
+- 🏠 **Home Security:** Monitor entrances, rooms, and outdoor spaces.
+- 📦 **Package Detection:** Receive alerts when deliveries arrive.
+- 🐕 **Pet Monitoring:** Track pet movements and activity.
+- 🚪 **Smart Doorbell:** Identify visitors with real-time notifications.
 
 ---
 
-## 📬 Contact
-For issues or contributions, feel free to open an issue or submit a pull request.
-
-GitHub: [Aniket Desai](https://github.com/RecursionReaper)
-[Yash Ogale](https://github.com/yashogale30)
-
----
+## 🙌 Contributors
+[Aniket Desai](https://github.com/RecursionReaper)  
+- [Yash Ogale](https://github.com/yashogale30)
 
 ## 📝 License
 This project is licensed under the MIT License.
 
 ---
 
-## 💡 Future Improvements
-- Cloud storage integration for snapshots.
-- Remote access via a secured web portal.
-- Enhanced object detection accuracy with updated models.
-- Voice assistant integration for real-time alerts.
-
----
-
-## 🙌 Contributions
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
----
-
-## 🚀 Acknowledgements
-- Raspberry Pi Foundation
-- YOLO Nano open-source community
-- Nginx open-source project
-
----
-
-🔒 **Stay secure, stay informed!** 🚀
-
+🚀 **Stay secure, stay informed!** 🔒

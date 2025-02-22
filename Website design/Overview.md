@@ -15,7 +15,7 @@ The website will consist of the following pages and sections:
 - **Gallery View:** Thumbnails of captured images from motion detection events.
 - **Image Details:** Clicking on an image opens a modal with the timestamp, detected objects, and options to download or delete.
 - **Filter & Search:** Users can filter images by date or detected objects.
-
+            
 ### 3. **Alerts Page**
 - **Notifications List:** Chronological list of alerts with icons indicating the type (motion, object detection, package delivery).
 - **Alert Details:** Provides captions from YOLO Nano detections and links to corresponding snapshots.
@@ -90,9 +90,5 @@ The goal is to create a clean, minimalistic, and responsive design with a focus 
 
 ---
 
-## 📬 Contact
-For inquiries or contributions, reach out via GitHub: [MASQUERADE-2005](https://github.com/MASQUERADE-2005)
-
-🔒 **Stay secure, stay informed!** 🚀
 
 

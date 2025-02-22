@@ -120,7 +120,7 @@ home-surveillance-nextjs/
 ---
 
 ## 🙌 Contributors
-[Aniket Desai](https://github.com/RecursionReaper)  
+- [Aniket Desai](https://github.com/RecursionReaper)  
 - [Yash Ogale](https://github.com/yashogale30)
 
 ## 📝 License

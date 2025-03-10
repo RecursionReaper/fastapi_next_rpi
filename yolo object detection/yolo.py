@@ -1,47 +1,49 @@
 import cv2
 from picamera2 import Picamera2
 from ultralytics import YOLO
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+import uvicorn
 
-# Set up the camera with Picam
+app = FastAPI()
+
+# Camera setup
 picam2 = Picamera2()
-picam2.preview_configuration.main.size = (1280, 1280)
+picam2.preview_configuration.main.size = (640, 480)  # Lower resolution for speed
 picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.align()
 picam2.configure("preview")
 picam2.start()
 
-# Load YOLOv8
-model = YOLO("yolov8n_ncnn_model")
+# Load YOLO model in NCNN format
+model = YOLO("yolov8n_ncnn_model")  # Ensure this NCNN model is available in your directory
 
-while True:
-    # Capture a frame from the camera
-    frame = picam2.capture_array()
-    
-    # Run YOLO model on the captured frame and store the results
-    results = model.predict(frame, imgsz = 320)    
-    # Output the visual detection data, we will draw this on our camera preview window
-    annotated_frame = results[0].plot()
-    
-    # Get inference time
-    inference_time = results[0].speed['inference']
-    fps = 1000 / inference_time  # Convert to milliseconds
-    text = f'FPS: {fps:.1f}'
+def generate_frames():
+    while True:
+        frame = picam2.capture_array()
 
-    # Define font and position
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    text_size = cv2.getTextSize(text, font, 1, 2)[0]
-    text_x = annotated_frame.shape[1] - text_size[0] - 10  # 10 pixels from the right
-    text_y = text_size[1] + 10  # 10 pixels from the top
+        # Run detection with optimized settings
+        results = model.predict(frame, imgsz=320, conf=0.5, iou=0.4, max_det=10)
+        annotated_frame = results[0].plot()
 
-    # Draw the text on the annotated frame
-    cv2.putText(annotated_frame, text, (text_x, text_y), font, 1, (255, 255, 255), 2, cv2.LINE_AA)
+        # FPS calculation
+        inference_time = results[0].speed['inference']
+        fps = 1000 / inference_time
+        cv2.putText(
+            annotated_frame, f'FPS: {fps:.1f}',
+            (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2
+        )
 
-    # Display the resulting frame
-    cv2.imshow("Camera", annotated_frame)
+        # Encode and yield frame
+        ret, buffer = cv2.imencode('.jpg', annotated_frame)
+        if not ret:
+            continue
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
 
-    # Exit the program if q is pressed
-    if cv2.waitKey(1) == ord("q"):
-        break
+@app.get("/")
+def video_feed():
+    return StreamingResponse(generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame")
 
-# Close all windows
-cv2.destroyAllWindows()
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

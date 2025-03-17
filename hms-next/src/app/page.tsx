@@ -1,10 +1,14 @@
 "use client";
 import { useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const router = useRouter();
+  
 
   useEffect(() => {
     async function startWebcam() {
@@ -20,6 +24,23 @@ export default function Home() {
 
     startWebcam();
   }, []);
+  const captureImage = () => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+
+    if (canvas && video) {
+      const context = canvas.getContext("2d");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const imageData = canvas.toDataURL("image/png");
+      localStorage.setItem("capturedImage", imageData); // Store in localStorage
+
+      // Redirect to Snaps page
+      router.push("/snaps");
+    }
+  };
 
   return (
     <div className="grid grid-rows-[auto_auto_1fr_auto] h-screen bg-black text-white font-sans antialiased overflow-hidden">
@@ -51,19 +72,19 @@ export default function Home() {
 
       <main className="flex justify-center items-center flex-1 p-4 sm:p-6 md:p-8 relative z-10 overflow-hidden">
         <div className="bg-gradient-to-br from-zinc-950/90 to-black/90 w-full sm:w-[90%] md:w-[80%] lg:w-[75%] h-full shadow-2xl rounded-xl sm:rounded-2xl flex justify-center items-center border border-zinc-800/30 backdrop-blur-lg overflow-hidden relative">
-          <video 
-            ref={videoRef} 
-            autoPlay 
-            playsInline 
-            className="w-full h-full object-cover rounded-xl"
-          />
+          <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover rounded-xl" />
+          <canvas ref={canvasRef} className="hidden" />
         </div>
+
+        <button 
+          onClick={captureImage} 
+          className="mt-6 px-6 py-3 bg-indigo-500 hover:bg-indigo-700 text-white rounded-lg transition-all duration-300"
+        >Capture</button>
       </main>
 
       <footer className="p-4 sm:p-6 text-center text-zinc-400 text-xs sm:text-sm md:text-base relative z-10 bg-gradient-to-t from-zinc-950/80 to-transparent shrink-0">
         Made by some crackheads
       </footer>
-
     </div>
   );
 }

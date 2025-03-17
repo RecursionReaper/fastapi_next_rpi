@@ -1,7 +1,26 @@
+"use client";
+import { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    async function startWebcam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error("Error accessing webcam:", error);
+      }
+    }
+
+    startWebcam();
+  }, []);
+
   return (
     <div className="grid grid-rows-[auto_auto_1fr_auto] h-screen bg-black text-white font-sans antialiased overflow-hidden">
       <header className="p-4 sm:p-6 text-center relative z-10 shrink-0">
@@ -31,9 +50,13 @@ export default function Home() {
       </nav>
 
       <main className="flex justify-center items-center flex-1 p-4 sm:p-6 md:p-8 relative z-10 overflow-hidden">
-        <div className="bg-gradient-to-br from-zinc-950/90 to-black/90 w-full sm:w-[90%] md:w-[80%] lg:w-[75%] h-full shadow-2xl rounded-xl sm:rounded-2xl flex justify-center items-center text-zinc-400 text-lg sm:text-xl md:text-2xl font-medium border border-zinc-800/30 backdrop-blur-lg hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] hover:scale-[1.01] transition-all duration-500 ease-out group relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <span className="relative z-20">VIDEO</span>
+        <div className="bg-gradient-to-br from-zinc-950/90 to-black/90 w-full sm:w-[90%] md:w-[80%] lg:w-[75%] h-full shadow-2xl rounded-xl sm:rounded-2xl flex justify-center items-center border border-zinc-800/30 backdrop-blur-lg overflow-hidden relative">
+          <video 
+            ref={videoRef} 
+            autoPlay 
+            playsInline 
+            className="w-full h-full object-cover rounded-xl"
+          />
         </div>
       </main>
 

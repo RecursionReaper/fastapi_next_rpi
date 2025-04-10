@@ -95,65 +95,26 @@ export default function Home() {
               </div>
             </div>
           )}
-        </div>
 
-        <button
-          onClick={captureImage}
-          disabled={isCapturing}
-          className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 px-6 py-3 ${isCapturing ? 'bg-blue-800' : 'bg-blue-600 hover:bg-blue-700'
-            } text-white rounded-lg transition-all duration-300 flex items-center space-x-2`}
-        >
-          <span>{isCapturing ? 'Capturing...' : 'Capture'}</span>
-          <svg
-            className={`w-5 h-5 ${isCapturing ? 'animate-pulse' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          <button
+            onClick={captureImage}
+            disabled={isCapturing}
+            className={`absolute top-4 right-4 px-4 py-2 ${isCapturing ? 'bg-blue-800' : 'bg-blue-600 hover:bg-blue-700'
+              } text-white rounded-lg transition-all duration-300 flex items-center space-x-2 backdrop-blur-sm`}
           >
-            <circle cx="12" cy="12" r="3" />
-            <path strokeLinecap="round" d="M19 4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm-7 13a4 4 0 110-8 4 4 0 010 8z" />
-          </svg>
-        </button>
-      </main>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Link href="/snaps" className="card group hover:border-blue-500/50 transition-colors">
-          <h2 className="text-xl font-semibold mb-2 group-hover:text-blue-400">📸 Snapshots</h2>
-          <p className="text-gray-400">Capture and view images from your surveillance cameras</p>
-        </Link>
-
-        <Link href="/alerts/intrusion" className="card group hover:border-red-500/50 transition-colors">
-          <h2 className="text-xl font-semibold mb-2 group-hover:text-red-400">🚨 Intrusion Alerts</h2>
-          <p className="text-gray-400">View detected intrusion events and related images</p>
-        </Link>
-
-        <Link href="/alerts/packages" className="card group hover:border-green-500/50 transition-colors">
-          <h2 className="text-xl font-semibold mb-2 group-hover:text-green-400">📦 Package Alerts</h2>
-          <p className="text-gray-400">Monitor package deliveries and pickups</p>
-        </Link>
-      </div>
-
-      <div className="card bg-gradient-to-br from-blue-900/50 to-purple-900/50">
-        <h2 className="text-xl font-semibold mb-4">System Status</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-4 rounded-lg bg-black/40">
-            <div className="text-sm text-gray-400">Cameras Active</div>
-            <div className="text-2xl font-semibold text-green-400">2/2</div>
-          </div>
-          <div className="p-4 rounded-lg bg-black/40">
-            <div className="text-sm text-gray-400">Storage Used</div>
-            <div className="text-2xl font-semibold text-blue-400">42%</div>
-          </div>
-          <div className="p-4 rounded-lg bg-black/40">
-            <div className="text-sm text-gray-400">Last Event</div>
-            <div className="text-2xl font-semibold text-purple-400">2m ago</div>
-          </div>
-          <div className="p-4 rounded-lg bg-black/40">
-            <div className="text-sm text-gray-400">AI Status</div>
-            <div className="text-2xl font-semibold text-green-400">Active</div>
-          </div>
+            <span>{isCapturing ? 'Capturing...' : 'Capture'}</span>
+            <svg
+              className={`w-5 h-5 ${isCapturing ? 'animate-pulse' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path strokeLinecap="round" d="M19 4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm-7 13a4 4 0 110-8 4 4 0 010 8z" />
+            </svg>
+          </button>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

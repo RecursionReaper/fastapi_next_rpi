@@ -13,8 +13,6 @@ export const metadata: Metadata = {
 const navItems = [
   { href: '/', label: 'Dashboard' },
   { href: '/snaps', label: 'Snapshots' },
-  { href: '/alerts/intrusion', label: 'Intrusion Alerts' },
-  { href: '/alerts/packages', label: 'Package Alerts' },
   { href: '/about', label: 'About' },
 ]
 
@@ -26,30 +24,45 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
-          <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-sm border-b border-gray-800 z-50">
+        <div className="flex flex-col min-h-screen bg-gradient-to-br from-black to-zinc-900">
+          <nav className="border-b border-zinc-800/50 backdrop-blur-xl bg-black/20 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-16">
+              <div className="flex justify-between h-16">
                 <div className="flex items-center">
-                  <span className="text-xl font-bold text-white">HMS</span>
+                  <Link
+                    href="/"
+                    className="text-xl font-semibold bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+                  >
+                    HMS
+                  </Link>
                 </div>
-                <div className="hidden md:block">
-                  <div className="flex items-center space-x-4">
-                    {navItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="nav-link text-gray-300 hover:text-white"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
+                <div className="flex items-center space-x-1">
+                  <Link
+                    href="/"
+                    className="nav-link group"
+                  >
+                    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-500 transform origin-left transition-transform scale-x-0 group-hover:scale-x-100" />
+                    <span className="relative">Dashboard</span>
+                  </Link>
+                  <Link
+                    href="/snaps"
+                    className="nav-link group"
+                  >
+                    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-500 transform origin-left transition-transform scale-x-0 group-hover:scale-x-100" />
+                    <span className="relative">Snapshots</span>
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="nav-link group"
+                  >
+                    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-500 transform origin-left transition-transform scale-x-0 group-hover:scale-x-100" />
+                    <span className="relative">About</span>
+                  </Link>
                 </div>
               </div>
             </div>
           </nav>
-          <main className="pt-20 min-h-screen">
+          <main className="flex-1 relative">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
               {children}
             </div>

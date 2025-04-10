@@ -1,0 +1,7 @@
+
+train: /content/datasets/train/images
+val: /content/datasets/valid/images
+test: /content/datasets/test/images
+
+nc: 1  # Number of classes
+names: ["delivery_box"]  # Class names

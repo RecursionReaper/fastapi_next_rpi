@@ -65,8 +65,8 @@ export default function Home() {
       </div>
 
       {/* LIVE STREAM SECTION */}
-      <main className="flex justify-center items-center flex-1 p-4 sm:p-6 md:p-8 relative z-10 overflow-hidden">
-        <div className="bg-gradient-to-br from-zinc-950/90 to-black/90 w-full sm:w-[90%] md:w-[80%] lg:w-[75%] h-full shadow-2xl rounded-xl sm:rounded-2xl flex justify-center items-center border border-zinc-800/30 backdrop-blur-lg overflow-hidden relative">
+      <main className="flex flex-col justify-center items-center flex-1 p-4 sm:p-6 md:p-8 relative z-10 overflow-hidden space-y-4">
+        <div className="bg-gradient-to-br from-zinc-950/90 to-black/90 w-full sm:w-[90%] md:w-[80%] lg:w-[75%] shadow-2xl rounded-xl sm:rounded-2xl flex justify-center items-center border border-zinc-800/30 backdrop-blur-lg overflow-hidden relative">
           <img
             id="live-stream"
             src="/py"
@@ -95,25 +95,25 @@ export default function Home() {
               </div>
             </div>
           )}
-
-          <button
-            onClick={captureImage}
-            disabled={isCapturing}
-            className={`absolute top-4 right-4 px-4 py-2 ${isCapturing ? 'bg-blue-800' : 'bg-blue-600 hover:bg-blue-700'
-              } text-white rounded-lg transition-all duration-300 flex items-center space-x-2 backdrop-blur-sm`}
-          >
-            <span>{isCapturing ? 'Capturing...' : 'Capture'}</span>
-            <svg
-              className={`w-5 h-5 ${isCapturing ? 'animate-pulse' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <circle cx="12" cy="12" r="3" />
-              <path strokeLinecap="round" d="M19 4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm-7 13a4 4 0 110-8 4 4 0 010 8z" />
-            </svg>
-          </button>
         </div>
+
+        <button
+          onClick={captureImage}
+          disabled={isCapturing}
+          className={`px-6 py-3 ${isCapturing ? 'bg-blue-800' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+            } text-white rounded-lg transition-all duration-300 flex items-center space-x-3 shadow-lg hover:shadow-blue-500/20`}
+        >
+          <svg
+            className={`w-6 h-6 ${isCapturing ? 'animate-pulse' : ''}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path strokeLinecap="round" d="M19 4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm-7 13a4 4 0 110-8 4 4 0 010 8z" />
+          </svg>
+          <span className="text-lg">{isCapturing ? 'Capturing...' : 'Capture Snapshot'}</span>
+        </button>
       </main>
     </div>
   );
